@@ -57,12 +57,12 @@ const Home = () => {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 animate-slide-up">
             AI for Precision{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-emerald-600">
-               Implant Detection from CT, MRI, and Radiographs
+               Implant Detection from X-RAY, CT and MRI
             </span>
           </h1>
           
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto animate-slide-up delay-100">
-            Using CT, MRI, and Edge Radiograph Detection for patient-specific insights that transform surgical planning and improve patient outcomes.
+            Using CT, MRI, and X-RAY Detection for patient-specific insights that transform surgical planning and improve patient outcomes.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up delay-200">
@@ -94,7 +94,7 @@ const Home = () => {
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-              <span>Edge Detection</span>
+              <span>X-RAY etection</span>
             </div>
           </div>
         </div>
@@ -305,7 +305,7 @@ const Home = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/contact"
+              to="/implant-identification"
               className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-lg hover:from-primary-700 hover:to-primary-800 transform hover:scale-105 transition-all duration-200"
             >
               Get Started Today
