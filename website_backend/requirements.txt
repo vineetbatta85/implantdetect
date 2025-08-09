@@ -2,5 +2,6 @@ fastapi
 uvicorn
 torch
 torchvision
+tensorflow==2.15.0
 pillow
 python-multipart
