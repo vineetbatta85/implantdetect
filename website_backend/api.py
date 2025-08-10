@@ -61,16 +61,6 @@ WRIST_CLASS_LABELS = [
 ]
 
 # =============================
-# Custom Layer Fix for Wrist Model
-# =============================
-class FixedFlatten(tf.keras.layers.Flatten):
-    """Custom Flatten layer to handle the list input issue"""
-    def call(self, inputs):
-        if isinstance(inputs, list):
-            inputs = inputs[0]  # Take the first element if it's a list
-        return super().call(inputs)
-
-# =============================
 # Model Loading Functions
 # =============================
 def load_pytorch_model():
@@ -99,78 +89,10 @@ def load_wrist_model():
     global wrist_model
     if wrist_model is None:
         try:
-            logger.info("Attempting to load wrist model with multiple approaches...")
-            
-            # Method 1: Try with custom objects to handle Flatten layer
-            try:
-                custom_objects = {
-                    'Flatten': FixedFlatten,
-                    'FixedFlatten': FixedFlatten
-                }
-                wrist_model = tf.keras.models.load_model(
-                    "wrist79_model.h5", 
-                    custom_objects=custom_objects,
-                    compile=False
-                )
-                logger.info("Wrist model loaded successfully with custom Flatten layer")
-                return
-            except Exception as e1:
-                logger.warning(f"Method 1 failed: {str(e1)}")
-            
-            # Method 2: Try loading without compile and with safe mode
-            try:
-                with tf.keras.utils.custom_object_scope({'Flatten': tf.keras.layers.Flatten}):
-                    wrist_model = tf.keras.models.load_model(
-                        "wrist79_model.h5",
-                        compile=False,
-                        safe_mode=False
-                    )
-                logger.info("Wrist model loaded successfully with safe_mode=False")
-                return
-            except Exception as e2:
-                logger.warning(f"Method 2 failed: {str(e2)}")
-            
-            # Method 3: Try loading weights only if we have architecture
-            try:
-                # This would require you to define the model architecture manually
-                # For now, we'll skip this approach
-                pass
-            except Exception as e3:
-                logger.warning(f"Method 3 failed: {str(e3)}")
-                
-            # Method 4: Create a simple fallback model (temporary solution)
-            try:
-                logger.info("Creating temporary fallback wrist model...")
-                wrist_model = create_fallback_wrist_model()
-                logger.info("Fallback wrist model created successfully")
-                return
-            except Exception as e4:
-                logger.warning(f"Fallback model creation failed: {str(e4)}")
-            
-            # If all methods fail
-            logger.error("All wrist model loading methods failed")
-            
+            wrist_model = tf.keras.models.load_model("wrist79_model.h5", compile=False)
+            logger.info("Wrist model loaded successfully")
         except Exception as e:
             logger.error(f"Failed to load wrist model: {str(e)}")
-
-def create_fallback_wrist_model():
-    """Create a simple fallback model for wrist predictions"""
-    model = tf.keras.Sequential([
-        tf.keras.layers.Input(shape=(224, 224, 3)),
-        tf.keras.layers.Conv2D(32, 3, activation='relu'),
-        tf.keras.layers.MaxPooling2D(),
-        tf.keras.layers.Conv2D(64, 3, activation='relu'),
-        tf.keras.layers.MaxPooling2D(),
-        tf.keras.layers.Conv2D(64, 3, activation='relu'),
-        tf.keras.layers.GlobalAveragePooling2D(),
-        tf.keras.layers.Dense(64, activation='relu'),
-        tf.keras.layers.Dense(len(WRIST_CLASS_LABELS), activation='softmax')
-    ])
-    
-    # Initialize with random weights (this is just a placeholder)
-    model.compile(optimizer='adam', loss='categorical_crossentropy')
-    logger.warning("Using fallback wrist model - predictions will be random!")
-    return model
 
 # =============================
 # Helper Functions
@@ -261,56 +183,14 @@ async def predict_wrist(file: UploadFile = File(...)):
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         input_tensor = preprocess_tf_image(image)
         
-        # Add error handling for prediction
-        try:
-            prediction = wrist_model.predict(input_tensor, verbose=0)
-            pred_index = int(np.argmax(prediction))
-            confidence = float(np.max(prediction))
-            predicted_label = WRIST_CLASS_LABELS[pred_index]
-            
-            return {
-                "prediction": predicted_label,
-                "confidence": round(confidence, 4),
-                "warning": "Using fallback model" if hasattr(wrist_model, '_is_fallback') else None
-            }
-        except Exception as pred_error:
-            logger.error(f"Wrist prediction error: {str(pred_error)}")
-            raise HTTPException(status_code=500, detail=f"Wrist prediction failed: {str(pred_error)}")
-            
+        prediction = wrist_model.predict(input_tensor, verbose=0)
+        pred_index = int(np.argmax(prediction))
+        confidence = float(np.max(prediction))
+        predicted_label = WRIST_CLASS_LABELS[pred_index]
+        
+        return {
+            "prediction": predicted_label,
+            "confidence": round(confidence, 4)
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Wrist prediction failed: {str(e)}")
-
-# =============================
-# Additional Debug Endpoints
-# =============================
-@app.get("/debug/models")
-async def debug_models():
-    """Debug endpoint to check model status"""
-    return {
-        "pytorch_model": {
-            "loaded": pytorch_model is not None,
-            "type": str(type(pytorch_model)) if pytorch_model else None
-        },
-        "knee_model": {
-            "loaded": knee_model is not None,
-            "type": str(type(knee_model)) if knee_model else None,
-            "summary": str(knee_model.summary()) if knee_model else None
-        },
-        "wrist_model": {
-            "loaded": wrist_model is not None,
-            "type": str(type(wrist_model)) if wrist_model else None,
-            "is_fallback": hasattr(wrist_model, '_is_fallback') if wrist_model else False
-        }
-    }
-
-@app.post("/debug/reload-wrist")
-async def reload_wrist_model():
-    """Force reload wrist model for debugging"""
-    global wrist_model
-    wrist_model = None
-    load_wrist_model()
-    return {
-        "status": "reload_attempted",
-        "loaded": wrist_model is not None,
-        "type": str(type(wrist_model)) if wrist_model else None
-    }
