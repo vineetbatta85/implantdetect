@@ -89,8 +89,9 @@ def load_wrist_model():
     global wrist_model
     if wrist_model is None:
         try:
-            wrist_model = tf.keras.models.load_model("wrist79_model.h5", compile=False)
-            logger.info("Wrist model loaded successfully")
+            # Load the new Keras v3 format
+            wrist_model = tf.keras.models.load_model("wrist_model.keras", compile=False)
+            logger.info("✅ Wrist model (.keras) loaded successfully")
         except Exception as e:
             logger.error(f"Failed to load wrist model: {str(e)}")
 

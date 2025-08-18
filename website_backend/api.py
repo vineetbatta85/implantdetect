@@ -89,108 +89,20 @@ def load_wrist_model():
     global wrist_model
     if wrist_model is None:
         try:
-            # Try multiple loading strategies for the wrist model
-            
-            # Strategy 1: Load with custom objects and safe mode
-            try:
-                wrist_model = tf.keras.models.load_model(
-                    "wrist79_model.h5", 
-                    compile=False,
-                    custom_objects=None,
-                    safe_mode=False
-                )
-                logger.info("Wrist model loaded successfully with standard loading")
-                return
-            except Exception as e1:
-                logger.warning(f"Standard loading failed: {str(e1)}")
-            
-            # Strategy 2: Load weights only approach
-            try:
-                # Create a simple model architecture that matches expected input/output
-                wrist_model = tf.keras.Sequential([
-                    tf.keras.layers.Input(shape=(224, 224, 3)),
-                    tf.keras.layers.Conv2D(32, 3, activation='relu'),
-                    tf.keras.layers.GlobalAveragePooling2D(),
-                    tf.keras.layers.Dense(128, activation='relu'),
-                    tf.keras.layers.Dropout(0.5),
-                    tf.keras.layers.Dense(len(WRIST_CLASS_LABELS), activation='softmax')
-                ])
-                
-                # Try to load weights if the architecture doesn't match exactly
-                try:
-                    wrist_model.load_weights("wrist79_model.h5")
-                    logger.info("Wrist model loaded successfully with weights loading")
-                    return
-                except:
-                    pass
-            except Exception as e2:
-                logger.warning(f"Weights loading failed: {str(e2)}")
-            
-            # Strategy 3: Load with TensorFlow 1.x compatibility
-            try:
-                with tf.compat.v1.Session() as sess:
-                    wrist_model = tf.keras.models.load_model("wrist79_model.h5", compile=False)
-                    logger.info("Wrist model loaded successfully with TF1.x compatibility")
-                    return
-            except Exception as e3:
-                logger.warning(f"TF1.x compatibility loading failed: {str(e3)}")
-            
-            # Strategy 4: Create a fallback model if all else fails
-            logger.warning("Creating fallback wrist model due to loading issues")
-            wrist_model = create_fallback_wrist_model()
-            
+            # Load the new Keras v3 format
+            wrist_model = tf.keras.models.load_model("wrist_model.keras", compile=False)
+            logger.info("✅ Wrist model (.keras) loaded successfully")
         except Exception as e:
-            logger.error(f"All wrist model loading strategies failed: {str(e)}")
-            # Create a simple fallback model
-            wrist_model = create_fallback_wrist_model()
-
-def create_fallback_wrist_model():
-    """Create a simple fallback model for wrist classification"""
-    try:
-        model = tf.keras.Sequential([
-            tf.keras.layers.Input(shape=(224, 224, 3)),
-            tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
-            tf.keras.layers.MaxPooling2D((2, 2)),
-            tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
-            tf.keras.layers.MaxPooling2D((2, 2)),
-            tf.keras.layers.Conv2D(256, (3, 3), activation='relu'),
-            tf.keras.layers.GlobalAveragePooling2D(),
-            tf.keras.layers.Dense(512, activation='relu'),
-            tf.keras.layers.Dropout(0.5),
-            tf.keras.layers.Dense(len(WRIST_CLASS_LABELS), activation='softmax')
-        ])
-        
-        # Initialize with random weights (this is just a fallback)
-        model.compile(optimizer='adam', loss='categorical_crossentropy')
-        logger.info("Fallback wrist model created successfully")
-        return model
-    except Exception as e:
-        logger.error(f"Failed to create fallback wrist model: {str(e)}")
-        return None
+            logger.error(f"Failed to load wrist model: {str(e)}")
 
 # =============================
 # Helper Functions
 # =============================
 def preprocess_tf_image(image: Image.Image, target_size=(224, 224)):
-    """Preprocess image for TensorFlow models with better error handling"""
-    try:
-        # Ensure image is RGB
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
-        
-        # Resize image
-        image = image.resize(target_size, Image.Resampling.LANCZOS)
-        
-        # Convert to numpy array and normalize
-        img_array = np.array(image, dtype=np.float32) / 255.0
-        
-        # Add batch dimension
-        img_array = np.expand_dims(img_array, axis=0)
-        
-        return img_array
-    except Exception as e:
-        logger.error(f"Image preprocessing failed: {str(e)}")
-        raise
+    image = image.resize(target_size)
+    img_array = np.array(image) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
+    return img_array
 
 # =============================
 # Endpoints
@@ -208,9 +120,7 @@ async def health_check():
             "pytorch": pytorch_model is not None,
             "knee": knee_model is not None,
             "wrist": wrist_model is not None
-        },
-        "tensorflow_version": tf.__version__,
-        "keras_version": tf.keras.__version__
+        }
     }
 
 @app.post("/predict/")
@@ -236,7 +146,6 @@ async def predict_pytorch(file: UploadFile = File(...)):
             "confidence": round(confidence, 4)
         }
     except Exception as e:
-        logger.error(f"PyTorch prediction error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
 
 @app.post("/predict/knee")
@@ -261,7 +170,6 @@ async def predict_knee(file: UploadFile = File(...)):
             "confidence": round(confidence, 4)
         }
     except Exception as e:
-        logger.error(f"Knee prediction error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Knee prediction failed: {str(e)}")
 
 @app.post("/predict/wrist")
@@ -276,42 +184,14 @@ async def predict_wrist(file: UploadFile = File(...)):
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         input_tensor = preprocess_tf_image(image)
         
-        # Add extra error handling for prediction
-        try:
-            prediction = wrist_model.predict(input_tensor, verbose=0)
-            
-            # Handle different prediction output formats
-            if isinstance(prediction, list):
-                prediction = prediction[0] if len(prediction) > 0 else np.array([[0.1] * len(WRIST_CLASS_LABELS)])
-            
-            if len(prediction.shape) == 1:
-                prediction = prediction.reshape(1, -1)
-            
-            pred_index = int(np.argmax(prediction))
-            confidence = float(np.max(prediction))
-            
-            # Ensure pred_index is within bounds
-            if pred_index >= len(WRIST_CLASS_LABELS):
-                pred_index = 0
-                confidence = 0.1
-                
-            predicted_label = WRIST_CLASS_LABELS[pred_index]
-            
-            return {
-                "prediction": predicted_label,
-                "confidence": round(confidence, 4),
-                "note": "Using fallback model" if wrist_model is None else None
-            }
-            
-        except Exception as pred_error:
-            logger.error(f"Wrist model prediction error: {str(pred_error)}")
-            # Return a default prediction if model prediction fails
-            return {
-                "prediction": WRIST_CLASS_LABELS[0],
-                "confidence": 0.1,
-                "note": "Model prediction failed, returned default"
-            }
-            
+        prediction = wrist_model.predict(input_tensor, verbose=0)
+        pred_index = int(np.argmax(prediction))
+        confidence = float(np.max(prediction))
+        predicted_label = WRIST_CLASS_LABELS[pred_index]
+        
+        return {
+            "prediction": predicted_label,
+            "confidence": round(confidence, 4)
+        }
     except Exception as e:
-        logger.error(f"Wrist prediction error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Wrist prediction failed: {str(e)}")
