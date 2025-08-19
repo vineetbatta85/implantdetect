@@ -89,13 +89,22 @@ def load_wrist_model():
     global wrist_model
     if wrist_model is None:
         try:
-            # Load the new Keras v3 format
+            # Monkey patch before loading
+            original_flatten_call = tf.keras.layers.Flatten.call
+            
+            def patched_call(self, inputs, **kwargs):
+                if isinstance(inputs, list) and len(inputs) == 1:
+                    inputs = inputs[0]
+                return original_flatten_call(self, inputs, **kwargs)
+            
+            tf.keras.layers.Flatten.call = patched_call
+            
+            # Now load normally
             wrist_model = tf.keras.models.load_model("wrist_model.keras", compile=False)
-            logger.info("✅ Wrist model (.keras) loaded successfully")
+            logger.info("✅ Wrist model loaded with patched Flatten")
+            
         except Exception as e:
-            logger.error(f"Failed to load wrist model: {str(e)}")
-
-# =============================
+            logger.error(f"Failed to load wrist model: {str(e)}")# =============================
 # Helper Functions
 # =============================
 def preprocess_tf_image(image: Image.Image, target_size=(224, 224)):
