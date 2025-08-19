@@ -89,23 +89,35 @@ def load_wrist_model():
     global wrist_model
     if wrist_model is None:
         try:
-            # Monkey patch before loading
-            original_flatten_call = tf.keras.layers.Flatten.call
+            # Create custom objects to handle the Flatten layer issue
+            def fixed_flatten_layer(*args, **kwargs):
+                # Create a Flatten layer
+                flatten_layer = tf.keras.layers.Flatten(*args, **kwargs)
+                
+                # Override the call method
+                original_call = flatten_layer.call
+                
+                def call(inputs, **call_kwargs):
+                    # Handle list input
+                    if isinstance(inputs, list) and len(inputs) == 1:
+                        inputs = inputs[0]
+                    return original_call(inputs, **call_kwargs)
+                
+                flatten_layer.call = call
+                return flatten_layer
             
-            def patched_call(self, inputs, **kwargs):
-                if isinstance(inputs, list) and len(inputs) == 1:
-                    inputs = inputs[0]
-                return original_flatten_call(self, inputs, **kwargs)
+            # Load model with custom Flatten
+            custom_objects = {'Flatten': fixed_flatten_layer}
+            wrist_model = tf.keras.models.load_model(
+                "wrist_model.keras", 
+                compile=False, 
+                custom_objects=custom_objects
+            )
             
-            tf.keras.layers.Flatten.call = patched_call
-            
-            # Now load normally
-            wrist_model = tf.keras.models.load_model("wrist_model.keras", compile=False)
-            logger.info("✅ Wrist model loaded with patched Flatten")
+            logger.info("✅ Wrist model loaded with fixed Flatten layer")
             
         except Exception as e:
-            logger.error(f"Failed to load wrist model: {str(e)}")# =============================
-# Helper Functions
+            logger.error(f"Failed to load wrist model: {str(e)}")# Helper Functions
 # =============================
 def preprocess_tf_image(image: Image.Image, target_size=(224, 224)):
     image = image.resize(target_size)
