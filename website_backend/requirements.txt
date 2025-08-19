@@ -7,7 +7,7 @@ python-multipart==0.0.20
 Pillow>=11.3.0
 
 # ML frameworks - CPU optimized versions
-tensorflow-cpu==2.19.0  # Use CPU-only version to save memory
+tensorflow==2.19.0  # Use CPU-only version to save memory
 torch==2.8.0
 torchvision==0.23.0
 
