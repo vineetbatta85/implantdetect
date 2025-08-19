@@ -89,35 +89,14 @@ def load_wrist_model():
     global wrist_model
     if wrist_model is None:
         try:
-            # Create custom objects to handle the Flatten layer issue
-            def fixed_flatten_layer(*args, **kwargs):
-                # Create a Flatten layer
-                flatten_layer = tf.keras.layers.Flatten(*args, **kwargs)
-                
-                # Override the call method
-                original_call = flatten_layer.call
-                
-                def call(inputs, **call_kwargs):
-                    # Handle list input
-                    if isinstance(inputs, list) and len(inputs) == 1:
-                        inputs = inputs[0]
-                    return original_call(inputs, **call_kwargs)
-                
-                flatten_layer.call = call
-                return flatten_layer
-            
-            # Load model with custom Flatten
-            custom_objects = {'Flatten': fixed_flatten_layer}
             wrist_model = tf.keras.models.load_model(
-                "wrist_model.keras", 
-                compile=False, 
-                custom_objects=custom_objects
+                "wrist_model.keras",
+                compile=False,
+                custom_objects={"Flatten": FixedFlatten}
             )
-            
-            logger.info("✅ Wrist model loaded with fixed Flatten layer")
-            
+            logger.info("✅ Wrist model loaded with FixedFlatten layer")
         except Exception as e:
-            logger.error(f"Failed to load wrist model: {str(e)}")# Helper Functions
+            logger.error(f"Failed to load wrist model: {str(e)}")
 # =============================
 def preprocess_tf_image(image: Image.Image, target_size=(224, 224)):
     image = image.resize(target_size)
