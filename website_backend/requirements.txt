@@ -1,21 +1,12 @@
-# Core FastAPI dependencies
-fastapi==0.116.1
-uvicorn[standard]==0.35.0
-python-multipart==0.0.20
 
-# Image processing
-Pillow>=11.3.0
-
-# ML frameworks - CPU optimized versions
-tensorflow==2.19.0  # Use CPU-only version to save memory
-torch==2.8.0
-torchvision==0.23.0
-
-# Core scientific computing
-numpy>=1.24.0,<2.0.0
+fastapi
+uvicorn[standard]
+python-multipar
+Pillow
+numpy
 
 # HTTP client (if needed)
-requests>=2.32.0
+requests
 
 # Optional: Reduce memory footprint
 # If you have memory issues, consider using these alternatives:
