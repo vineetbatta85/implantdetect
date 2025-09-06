@@ -15,7 +15,7 @@ const KneeModel = () => {
     setLoading(true);
     
     try {
-      const res = await fetch('https://aiimaging-1.onrender.com/predict/knee', {
+      const res = await fetch('https://impant.onrender.com/predict/knee', {
         method: 'POST',
         body: formData,
       });
