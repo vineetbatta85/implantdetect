@@ -1,2 +1,0 @@
-website_backend/knee.h5 filter=lfs diff=lfs merge=lfs -text
-website_backend/wrist_model.keras filter=lfs diff=lfs merge=lfs -text
