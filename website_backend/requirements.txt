@@ -1,14 +1,8 @@
-
 fastapi
-uvicorn[standard]
+uvicorn
+torch
+torchvision
+pillow
 python-multipart
-Pillow
 numpy
 
-# HTTP client (if needed)
-requests
-
-# Optional: Reduce memory footprint
-# If you have memory issues, consider using these alternatives:
-# tensorflow-lite  # Much smaller than full TensorFlow
-# onnxruntime     # For optimized inference
