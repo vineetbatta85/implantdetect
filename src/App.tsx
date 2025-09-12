@@ -13,6 +13,7 @@ import Wrist from './pages/Wrist.tsx';
 import WristModel from './pages/wrist-model.tsx';
 import Knee from './pages/Knee.tsx';
 import KneeModel from './pages/knee-model.tsx'
+import ShoulderModel from './pages/shoulder-model.tsx'
 
 
 
@@ -36,7 +37,7 @@ function App() {
   <Route path="/wrist-model" element={<WristModel />} />
   <Route path="/xray/knee" element={<Knee />} />
   <Route path="/knee-model" element={<KneeModel />} />
-
+  <Route path="/shoulder-model" element={<ShoulderModel />} />
 </Routes>
 
         </main>

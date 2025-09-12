@@ -1,110 +1,194 @@
-import React, { useState } from 'react';
-import { UploadCloud, Brain, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, ArrowRight, Zap, Eye, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+const implantList = [
+  "Accumed Polarus",
+  "Arthex Inverse", 
+  "Arthex universe",
+  "Biomet Bio-Angular",
+  "Biomet Comprehensive",
+  "Biomet verso",
+  "DJO Encore Reverse",
+  "DePuy Global Advantage CTA Head",
+  "Depuy Delta",
+  "Depuy Global",
+  "EXATECH Equinox",
+  "Evolutis UNIC",
+  "Exatech Interspace",
+  "Stryker O leary",
+  "Stryker solar",
+  "Tornier Aequalis Modular",
+  "Tornier Press Fit",
+  "Zimmer Bigliani",
+  "Zimmer Biomet Sidus",
+  "Zimmer Fenlin total shoulder system",
+  "Smith and Nephew Promos"
+];
+
+const implantImages: Record<string, string> = {
+  "Accumed Polarus": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Arthex Inverse": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Arthex universe": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Biomet Bio-Angular": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Biomet Comprehensive": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Biomet verso": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "DJO Encore Reverse": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "DePuy Global Advantage CTA Head": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Depuy Delta": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Depuy Global": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "EXATECH Equinox": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Evolutis UNIC": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Exatech Interspace": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Stryker O leary": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Stryker solar": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Tornier Aequalis Modular": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Tornier Press Fit": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Zimmer Bigliani": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Zimmer Biomet Sidus": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Zimmer Fenlin total shoulder system": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png",
+  "Smith and Nephew Promos": "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/shoulder-placeholder.png"
+};
 
 const Shoulder = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [result, setResult] = useState<{ prediction: string; confidence: number } | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const navigate = useNavigate();
 
-  const handleUpload = async () => {
-    if (!file) return;
-    const formData = new FormData();
-    formData.append('file', file);
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
-    setLoading(true);
-    const res = await fetch('https://impant.onrender.com/predict/shoulder', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const data = await res.json();
-    setResult(data);
-    setLoading(false);
+  const handleModelNavigation = () => {
+    navigate('/shoulder-model');
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0] || null;
-    setFile(selected);
-    setResult(null);
-    if (selected) {
-      setPreviewUrl(URL.createObjectURL(selected));
-    }
+  const handleCardClick = (implantName: string) => {
+    const implantRoute = implantName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    navigate(`/${implantRoute}`);
+  };
+
+  const handleBackToMain = () => {
+    navigate('/');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white p-10">
-      <h1 className="text-4xl font-bold text-gray-900 mb-10 text-center">Shoulder Implant Identification</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-pink-50">
+      {/* Background glows */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-pink-200/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-rose-200/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-        {/* LEFT: Upload Section */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Upload X-ray Image</h2>
-          <label className="block w-full">
-            <div className="flex items-center justify-center gap-3 bg-gray-100 border-2 border-dashed border-gray-300 hover:border-blue-400 text-gray-700 rounded-lg px-6 py-10 cursor-pointer transition duration-200">
-              <UploadCloud className="w-6 h-6" />
-              <span className="font-medium text-sm">Click to select image</span>
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-            />
-          </label>
-
-          {previewUrl && (
-            <div className="mt-6">
-              <img
-                src={previewUrl}
-                alt="Selected"
-                className="w-full max-h-96 object-contain rounded-lg shadow"
-              />
-            </div>
-          )}
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={handleUpload}
-              disabled={!file || loading}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-50"
+      <div className="relative z-10 p-4 sm:p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className={`mb-8 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0'}`}>
+            <button 
+              onClick={handleBackToMain}
+              className="group flex items-center text-gray-600 hover:text-gray-900 mb-6 transition-all duration-300 hover:translate-x-1"
             >
-              <Brain className="w-5 h-5" />
-              {loading ? 'Analyzing...' : 'Predict Implant'}
+              <ArrowLeft className="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1" />
+              <span className="font-medium">Back to Main</span>
             </button>
-          </div>
-        </div>
-
-        {/* RIGHT: Prediction Result */}
-        <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col justify-center">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">Prediction Result</h2>
-
-          {!result && (
-            <div className="text-gray-500 text-center mt-8">
-              <p className="text-lg">Prediction result will appear here after upload.</p>
-            </div>
-          )}
-
-          {result && (
-            <div className="space-y-6">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 shadow-inner">
-                <p className="text-sm text-gray-500">Predicted Implant</p>
-                <h3 className="text-3xl font-bold text-blue-800 mt-1">{result.prediction}</h3>
-              </div>
-
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6 shadow-inner">
-                <p className="text-sm text-gray-500">Confidence Score</p>
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-2xl font-bold text-green-700">{(result.confidence * 100).toFixed(2)}%</span>
-                  <ShieldCheck className="w-6 h-6 text-green-600" />
-                </div>
-              </div>
-
-              <p className="text-sm text-gray-400 mt-6">
-                Note: This AI prediction assists identification. Final verification should be clinical.
+            
+            <div className="text-center">
+              <h1 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-gray-900 via-pink-900 to-rose-900 bg-clip-text text-transparent mb-4">
+                Shoulder Implant Library
+              </h1>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+                Comprehensive collection of shoulder implants with AI-powered identification
               </p>
             </div>
-          )}
+          </div>
+
+          {/* Hero Section */}
+          <div className={`mb-16 transition-all duration-1000 delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <div className="relative bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-transparent to-rose-500/5"></div>
+              
+              <div className="relative flex flex-col lg:flex-row items-center justify-center lg:space-x-12 space-y-8 lg:space-y-0">
+                {/* Icon */}
+                <div className="w-24 h-24 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-xl">
+                  <Zap className="w-12 h-12 text-white" />
+                </div>
+
+                {/* Content */}
+                <div className="text-center lg:text-left max-w-xl">
+                  <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                    AI-Powered Shoulder{" "}
+                    <span className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Analysis</span>
+                  </h2>
+                  <p className="text-gray-600 mb-8 text-lg">
+                    Upload your X-ray and let our intelligent system identify shoulder implant specifications instantly.
+                  </p>
+                  
+                  <button
+                    onClick={handleModelNavigation}
+                    className="bg-gradient-to-r from-pink-600 to-rose-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:from-pink-700 hover:to-rose-700 transition transform hover:scale-105"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Search className="w-5 h-5" />
+                      <span>Identify Implant</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Implant Grid */}
+          <div className={`transition-all duration-1000 delay-500 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
+              <div className="flex items-center mb-8">
+                <Eye className="w-8 h-8 text-pink-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Shoulder Implant Collection</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {implantList.map((implant, index) => (
+                  <div
+                    key={index}
+                    className="group bg-white rounded-2xl p-6 shadow hover:shadow-lg transition cursor-pointer"
+                    onClick={() => handleCardClick(implant)}
+                    onMouseEnter={() => setHoveredCard(index)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                  >
+                    {/* Image */}
+                    <div className="aspect-square bg-gradient-to-br from-gray-50 to-pink-50 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={implantImages[implant]}
+                        alt={implant}
+                        className="max-w-[80%] max-h-[80%] object-contain group-hover:scale-105 transition-transform"
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-pink-700 transition-colors text-sm">
+                      {implant}
+                    </h3>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {['X-ray', '3D', 'Specs'].map((tag, tagIndex) => (
+                        <span
+                          key={tag}
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            hoveredCard === index
+                              ? 'bg-pink-100 text-pink-700'
+                              : 'bg-gray-100 text-gray-600'
+                          }`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -112,3 +196,4 @@ const Shoulder = () => {
 };
 
 export default Shoulder;
+

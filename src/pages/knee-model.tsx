@@ -24,7 +24,6 @@ const KneeModel = () => {
       setResult(data);
     } catch (error) {
       console.error('Error predicting knee implant:', error);
-      // Handle error appropriately
     } finally {
       setLoading(false);
     }
@@ -40,12 +39,11 @@ const KneeModel = () => {
   };
 
   const handleBackToKnee = () => {
-    console.log('Back to Knee Library');
     window.location.href = '/knee';
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white p-10">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white p-10">
       {/* Header with Back Button */}
       <div className="max-w-6xl mx-auto mb-8">
         <button 
@@ -57,14 +55,16 @@ const KneeModel = () => {
         </button>
       </div>
 
-      <h1 className="text-4xl font-bold text-gray-900 mb-10 text-center">Knee Implant Identification</h1>
+      <h1 className="text-4xl font-bold text-gray-900 mb-10 text-center">
+        Knee Implant Identification
+      </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
         {/* LEFT: Upload Section */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-white rounded-2xl shadow-lg p-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Upload X-ray Image</h2>
           <label className="block w-full">
-            <div className="flex items-center justify-center gap-3 bg-gray-100 border-2 border-dashed border-gray-300 hover:border-green-400 text-gray-700 rounded-lg px-6 py-10 cursor-pointer transition duration-200">
+            <div className="flex items-center justify-center gap-3 bg-gray-100 border-2 border-dashed border-gray-300 hover:border-purple-400 text-gray-700 rounded-lg px-6 py-10 cursor-pointer transition duration-200">
               <UploadCloud className="w-6 h-6" />
               <span className="font-medium text-sm">Click to select knee X-ray image</span>
             </div>
@@ -90,7 +90,7 @@ const KneeModel = () => {
             <button
               onClick={handleUpload}
               disabled={!file || loading}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 transition disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg shadow hover:from-blue-700 hover:to-purple-700 transition disabled:opacity-50"
             >
               <Brain className="w-5 h-5" />
               {loading ? 'Analyzing Knee...' : 'Predict Knee Implant'}
@@ -102,7 +102,7 @@ const KneeModel = () => {
             <h3 className="font-semibold text-gray-700 mb-2">Upload Guidelines:</h3>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>• Upload clear anterior-posterior (AP) or lateral knee X-rays</li>
-              <li>• Ensure the wrist implant is clearly visible</li>
+              <li>• Ensure the implant is clearly visible</li>
               <li>• Supported formats: JPEG, PNG, DICOM</li>
               <li>• Maximum file size: 10MB</li>
             </ul>
@@ -110,31 +110,33 @@ const KneeModel = () => {
         </div>
 
         {/* RIGHT: Prediction Result */}
-        <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col justify-center">
+        <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col justify-center">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">Prediction Result</h2>
 
           {!result && (
             <div className="text-gray-500 text-center mt-8">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Brain className="w-8 h-8 text-gray-400" />
+              <div className="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Brain className="w-8 h-8 text-purple-400" />
               </div>
               <p className="text-lg">Knee implant prediction will appear here after upload.</p>
-              <p className="text-sm mt-2">Our AI can identify various knee implant types including total wrist systems, partial replacements, and fusion devices.</p>
+              <p className="text-sm mt-2">
+                Our AI can identify various knee implant types including total knee systems, partial replacements, and fusion devices.
+              </p>
             </div>
           )}
 
           {result && (
             <div className="space-y-6">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6 shadow-inner">
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 shadow-inner">
                 <p className="text-sm text-gray-500">Predicted Knee Implant</p>
-                <h3 className="text-3xl font-bold text-green-800 mt-1">{result.prediction}</h3>
+                <h3 className="text-3xl font-bold text-purple-800 mt-1">{result.prediction}</h3>
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 shadow-inner">
+              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-6 shadow-inner">
                 <p className="text-sm text-gray-500">Confidence Score</p>
                 <div className="flex items-center justify-between mt-2">
-                  <span className="text-2xl font-bold text-blue-700">{(result.confidence * 100).toFixed(2)}%</span>
-                  <ShieldCheck className="w-6 h-6 text-blue-600" />
+                  <span className="text-2xl font-bold text-indigo-700">{(result.confidence * 100).toFixed(2)}%</span>
+                  <ShieldCheck className="w-6 h-6 text-indigo-600" />
                 </div>
               </div>
 
@@ -161,7 +163,7 @@ const KneeModel = () => {
       {loading && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
             <p className="text-gray-700">Analyzing knee X-ray...</p>
             <p className="text-sm text-gray-500 mt-2">This may take a few moments</p>
           </div>
@@ -172,3 +174,4 @@ const KneeModel = () => {
 };
 
 export default KneeModel;
+
