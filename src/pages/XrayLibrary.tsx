@@ -59,7 +59,7 @@ const parts = [
     count: "15 implants"
   },
   {
-    name: "Ankle",
+    name: "Foot and Ankle",
     color: "bg-teal-100",
     hoverColor: "hover:bg-teal-200",
     borderColor: "border-teal-300",
@@ -68,17 +68,6 @@ const parts = [
     image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-15-at-2.37.52-am.jpeg",
     description: "Total ankle replacements and arthrodesis implants",
     count: "8 implants"
-  },
-  {
-    name: "Foot",
-    color: "bg-yellow-100",
-    hoverColor: "hover:bg-yellow-200",
-    borderColor: "border-yellow-300",
-    textColor: "text-yellow-800",
-    to: "/xray/foot",
-    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-15-at-2.37.52-am.jpeg",
-    description: "Forefoot, midfoot, and hindfoot implant systems",
-    count: "9 implants"
   },
   {
     name: "Thumb",
