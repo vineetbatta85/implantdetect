@@ -1,8 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Play, Shield, Zap, Users, CheckCircle, Brain, Scan, Target, Heart, Activity, Stethoscope, Zap as Lightning, Crosshair, Microscope, Monitor, Cpu, Database, Wifi, Radio, Eye } from 'lucide-react';
 
 const Home = () => {
+ const navigate = useNavigate();
+  const videoRef = useRef<HTMLDivElement | null>(null);
+
   // Floating medical icons configuration
+//
+//
+//
+   const goToImplantIdentification = () => navigate('/implant-identification');
+  const goToResearch = () => navigate('/research');
+  const scrollToVideo = () => videoRef.current?.scrollIntoView({ behavior: 'smooth' });
   const floatingIcons = [
     { Icon: Heart, x: 10, y: 20, delay: 0, color: 'text-red-500' },
     { Icon: Activity, x: 80, y: 15, delay: 1, color: 'text-blue-500' },
@@ -363,11 +373,15 @@ const Home = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <button className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
+            <button 
+onClick={goToImplantIdentification}
+             className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
               Explore Technology
               <ArrowRight className="ml-2 w-5 h-5" />
             </button>
-            <button className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
+            <button
+onClick={scrollToVideo}
+className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
               <Play className="mr-2 w-5 h-5" />
               Request Demo
             </button>
@@ -601,11 +615,15 @@ const Home = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200">
+            <button
+onClick={goToImplantIdentification}
+className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200">
               Get Started Today
               <ArrowRight className="ml-2 w-5 h-5" />
             </button>
-            <button className="inline-flex items-center px-8 py-4 bg-transparent text-white font-semibold rounded-lg border-2 border-white hover:bg-white hover:text-gray-900 transform hover:scale-105 transition-all duration-200">
+            <button 
+ onClick={goToResearch}
+className="inline-flex items-center px-8 py-4 bg-transparent text-white font-semibold rounded-lg border-2 border-white hover:bg-white hover:text-gray-900 transform hover:scale-105 transition-all duration-200">
               View Research
             </button>
           </div>

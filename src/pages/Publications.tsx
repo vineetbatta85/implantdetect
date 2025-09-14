@@ -2,147 +2,134 @@ import React from "react";
 import { CalendarDays, ExternalLink, FileText } from "lucide-react";
 
 const filters = [
-  "All Publications (10)",
+  "All Publications (9)",
   "Journal Articles (3)",
+  "Conference Proceedings (4)",
   "Posters (1)",
-  "Conference Proceedings (5)",
-  "Video Presentations (1)",
+  "Others (1)",
 ];
 
 const stats = [
-  { label: "Total Publications", value: "25+" },
-  { label: "Peer-Reviewed Articles", value: "15" },
-  { label: "Conference Presentations", value: "8" },
-  { label: "Total Citations", value: "450+", highlight: true },
+  { label: "Total Publications", value: "9" },
+  { label: "Peer-Reviewed Articles", value: "3" },
+  { label: "Conference Presentations", value: "4" },
 ];
 
 const publications = [
-  {
-    type: "Conference",
-    title:
-      "Supra-human orthopedic implant identification in radiographs using deep learning",
-    authors: "R. Patil et al.",
-    journal: "BOA Virtual Congress 2020, Imperial College, UK",
-    date: "2020",
-    abstract:
-      "Presented at BOA Congress, this study demonstrates deep learning surpassing human-level accuracy in identifying orthopedic implants.",
-    tags: ["Radiograph", "Deep Learning", "BOA"],
-    link: "#",
-  },
   {
     type: "Journal",
     title:
       "Automated identification of orthopedic implants on radiographs using deep learning",
     authors:
       "Patel, R., Thong, E.H., Batta, V., Bharath, A.A., Francis, D., Howard, J.",
-    journal: "Radiology: Artificial Intelligence",
+    journal: "Radiology: Artificial Intelligence, 3(4), e200183",
     date: "2021",
     abstract:
       "Published in Radiology: AI, this research showcases a robust model for implant identification on radiographs.",
-    tags: ["Journal", "X-ray", "Radiology"],
-    link: "#",
+    tags: ["Radiograph", "Deep Learning", "Journal"],
+    link: "https://pubs.rsna.org/doi/full/10.1148/ryai.2021200183",
   },
   {
     type: "Journal",
     title:
-      "Automated classification of total knee replacement prosthesis on plain film radiograph using a CNN",
-    authors: "Samuel C. Belete, Vineet Batta, Holger Kunz",
-    journal: "Informatics in Medicine Unlocked",
+      "Automated classification of total knee replacement prosthesis on plain film radiograph using a deep convolutional neural network",
+    authors: "Belete, S.C., Batta, V., Kunz, H.",
+    journal: "Informatics in Medicine Unlocked, 25, 100669",
     date: "2021",
     abstract:
       "This work applies convolutional neural networks for automated classification of knee prostheses using plain radiographs.",
     tags: ["Knee", "CNN", "Classification"],
-    link: "#",
+    link: "https://www.sciencedirect.com/science/article/pii/S2352914821001544",
+  },
+  {
+    type: "Journal",
+    title: "Knee implant identification by fine-tuning deep learning models",
+    authors:
+      "Sharma, S., Batta, V., Chidambaranathan, M., Mathialagan, P., Mani, G., Kiruthika, M., Datta, B., Kamineni, S., Reddy, G., Masilamani, S., Vijayan, S.",
+    journal: "Indian Journal of Orthopaedics, 55, 1295–1305",
+    date: "2021",
+    abstract:
+      "This study fine-tunes CNNs for implant classification, improving performance on knee implant datasets.",
+    tags: ["Knee", "Transfer Learning", "Orthopaedics"],
+    link: "https://link.springer.com/article/10.1007/s43465-021-00529-9",
   },
   {
     type: "Conference",
     title:
-      "AI-based identification of Total Knee Arthroplasty Implants",
-    authors:
-      "Smaranjit Ghose, Suhrid Datta, Vineet Batta, Dr. C. Malathy, Gayathri M",
-    journal: "ICISS 2020, IEEE Xplore",
+      "Artificial intelligence based identification of Total Knee Arthroplasty Implants",
+    authors: "Ghose, S., Datta, S., Batta, V., Malathy, C.",
+    journal: "International Conference on Intelligent Sustainable Systems (ICISS)",
     date: "2020",
     abstract:
       "Presented at ICISS 2020, this paper proposes an AI system for knee arthroplasty implant detection.",
     tags: ["Knee", "ICISS", "AI"],
-    link: "#",
-  },
-  {
-    type: "Journal",
-    title:
-      "Knee Implant Identification by Fine-Tuning Deep Learning Models",
-    authors:
-      "Sukkrit Sharma, Vineet Batta, Malathy C., et al.",
-    journal: "Indian Journal of Orthopaedics",
-    date: "September 2021",
-    abstract:
-      "This study fine-tunes CNNs for implant classification, improving performance on knee implant datasets.",
-    tags: ["Knee", "Transfer Learning", "Orthopaedics"],
-    link: "https://doi.org/10.1007/s43465-021-00529-9",
+    link: "https://ieeexplore.ieee.org/abstract/document/10179730",
   },
   {
     type: "Conference",
     title:
-      "Automatic Identification of Make and Model of Ankle Implants using AI",
+      "Automatic Identification of Make and Model of Ankle Implants using Artificial Intelligence",
     authors:
-      "Shaik Mushkin Ali, Sahithi Nara, A. Ramanathan, C. Malathy, R. Athilakshmi, M. Gayathri, Vineet Batta",
-    journal: "IEEE Xplore",
-    date: "July 2023",
+      "Ali, S.M., Nara, S., Ramanathan, A., Malathy, C., Athilakshmi, R., Gayathri, M., Batta, V.",
+    journal:
+      "Fifth International Conference on Electrical, Computer and Communication Technologies (ICECCT), IEEE",
+    date: "Feb 2023",
     abstract:
       "Presents a model to identify specific ankle implant models using anterior-posterior radiographs.",
     tags: ["Ankle", "AI", "IEEE"],
-    link: "#",
+    link: "https://link.springer.com/chapter/10.1007/978-3-031-53085-2_11",
   },
   {
     type: "Conference",
     title:
-      "Identification of Knee Prostheses from Lateral Radiographs Using Deep Learning",
-    authors:
-      "Johny Samuel S., Neil Bagewadi, Malathy C., Balasaraswathi V.R., Gayathri M., Vineet Batta, A. Ramanathan",
-    journal: "EECSS’23, London",
-    date: "Aug 2023",
+      "Automated Knee Implant Identification from 2D Templates Using Image Processing and Artificial Intelligence – An Experimental Approach",
+    authors: "Jadhav, R., Purwar, T., Ramanathan, A., Malathy, C., Gayathri, M., Batta, V.",
+    journal:
+      "International Conference on Artificial Intelligence and its Application, Springer",
+    date: "2023",
     abstract:
-      "Describes an AI pipeline that accurately classifies lateral knee radiographs using deep learning.",
-    tags: ["Knee", "EECSS", "Lateral"],
-    link: "#",
+      "Describes a novel experimental approach using template-based matching and AI for knee implant identification.",
+    tags: ["Knee", "Templates", "AI"],
+    link: "https://link.springer.com/chapter/10.1007/978-3-031-84397-6_14",
   },
   {
     type: "Conference",
     title:
-      "Automated Identification of Make and Model of Total Wrist Replacement Implants using Deep Learning",
+      "Harnessing the potential of deep learning for total shoulder implant classification: a comparative study",
     authors:
-      "Saisha Shetty, Naman Garg, Gayathri M, Malathy C, Vineet Batta, A. Ramanathan",
-    journal: "EECSS’23, London",
-    date: "Aug 2023",
+      "Mishra, A., Ramanathan, A., Batta, V., Malathy, C., Kundu, S.S., Gayathri, M.",
+    journal: "Annual Conference on Medical Image Understanding and Analysis (MIUA), Springer",
+    date: "2023",
     abstract:
-      "This study utilizes CNNs to identify total wrist replacement implant models from imaging data.",
-    tags: ["Wrist", "Deep Learning", "EECSS"],
-    link: "#",
+      "Compares deep learning architectures for accurate classification of total shoulder implants.",
+    tags: ["Shoulder", "Deep Learning", "MIUA"],
+    link: "https://link.springer.com/chapter/10.1007/978-3-031-48593-0_9",
   },
   {
     type: "Conference",
-    title: "Identification of Ankle Implants Using Anterior Posterior View",
-    authors:
-      "Shaik Mushkin Ali, R. Athilakshmi, A. Ramanathan, Sahithi Nara, M. Gayathri, C. Malathy, Vineet Batta",
-    journal: "Conference Presentation",
-    date: "Dec 2023",
-    abstract:
-      "Demonstrates implant recognition from AP views, achieving high classification accuracy on ankle implant datasets.",
-    tags: ["Ankle", "Radiograph", "AP View"],
-    link: "#",
-  },
-  {
-    type: "Journal",
     title:
       "Automated Make and Model Identification of Reverse Shoulder Implants Using Deep Learning Methodology",
     authors:
-      "Ved Prakash Dubey, A. Ramanathan, S. Rajagopalan, C. Malathy, M. Gayathri, Vineet Batta, Srinath Kamineni",
-    journal: "Journal Submission",
-    date: "Jan 30, 2024",
+      "Dubey, V.P., Ramanathan, A., Rajagopalan, S., Malathy, C., Gayathri, M., Batta, V., Kamineni, S.",
+    journal:
+      "International Conference on Recent Trends in Image Processing and Pattern Recognition, Springer",
+    date: "Dec 2023",
     abstract:
       "Applies AI-based pattern detection for accurate reverse shoulder implant identification across various designs.",
     tags: ["Shoulder", "Deep Learning", "Reverse Implant"],
-    link: "#",
+    link: "https://www.researchgate.net/publication/363464689_Artificial_Intelligence_based_identification_of_Total_Knee_Arthroplasty_Implants",
+  },
+  {
+    type: "Poster",
+    title:
+      "Supra-human orthopedic implant identification in radiographs using deep learning",
+    authors: "R. Patil et al.",
+    journal: "BOA Virtual Congress, Imperial College, UK",
+    date: "2020",
+    abstract:
+      "Presented at BOA Congress, this study demonstrates deep learning surpassing human-level accuracy in identifying orthopedic implants.",
+    tags: ["Radiograph", "Deep Learning", "Poster"],
+    link: "https://www.researchgate.net/publication/389808026_Automated_Knee_Implant_Identification_from_2D_Templates_Using_Image_Processing_and_Artificial_Intelligence_-_An_Experimental_Approach",
   },
 ];
 
@@ -179,7 +166,7 @@ const Publications: React.FC = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
           {stats.map((stat, idx) => (
             <div
               key={idx}
@@ -233,6 +220,8 @@ const Publications: React.FC = () => {
                 <a
                   href={pub.link}
                   className="flex items-center gap-1 text-blue-600 font-medium hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <ExternalLink className="w-4 h-4" />
                   Read More
@@ -247,3 +236,4 @@ const Publications: React.FC = () => {
 };
 
 export default Publications;
+

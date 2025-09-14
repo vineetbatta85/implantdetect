@@ -19,17 +19,17 @@ const implantList = [
 
 const implantImages = {
   'Smith and Nephew LEGION': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/legion.png',
-  'Smith and Nephew ANTHEM': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/anthem.png',
+  'Smith and Nephew ANTHEM': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/nephewanthem.jpeg',
   'Stryker SCORPIO': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/scorpio.png',
-  'Zimmer LPS Flex Knee GSF': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/gsf.png',
-  'Zimmer Natural Knee II': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/nk.png',
-  'Zimmer NEXGEN': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/nexgen.png',
+  'Zimmer LPS Flex Knee GSF': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/lps.jpeg',
+  'Zimmer Natural Knee II': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/natural.jpeg',
+  'Zimmer NEXGEN': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/nexgen.jpeg',
   'Zimmer Oxford': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/oxford.png',
   'Zimmer persona': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/persona.png',
   'Zimmer Vanguard': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/vanguard-1.png',
-  'Biomet AGC': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/agc.png',
-  'Depuy Attune': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/depuy-1.png',
-  'Exatech Opterak Logic': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/exatech.png',
+  'Biomet AGC': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/biomet.jpeg',
+  'Depuy Attune': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-13-at-2.57.27-pm.jpeg',
+  'Exatech Opterak Logic': 'https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-13-at-2.46.02-pm.jpeg',
 };
 
 const Knee = () => {

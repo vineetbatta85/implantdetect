@@ -54,7 +54,7 @@ const parts = [
     borderColor: "border-blue-300",
     textColor: "text-blue-800",
     to: "/xray/spine",
-    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/spine-placeholder.png",
+    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-14-at-11.42.53-pm.jpeg",
     description: "Cervical, thoracic, and lumbar spinal fixation systems",
     count: "15 implants"
   },
@@ -65,7 +65,7 @@ const parts = [
     borderColor: "border-teal-300",
     textColor: "text-teal-800",
     to: "/xray/ankle",
-    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/ankle-placeholder.png",
+    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-15-at-2.37.52-am.jpeg",
     description: "Total ankle replacements and arthrodesis implants",
     count: "8 implants"
   },
@@ -76,7 +76,7 @@ const parts = [
     borderColor: "border-yellow-300",
     textColor: "text-yellow-800",
     to: "/xray/foot",
-    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/foot-placeholder.png",
+    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-15-at-2.37.52-am.jpeg",
     description: "Forefoot, midfoot, and hindfoot implant systems",
     count: "9 implants"
   },
@@ -87,7 +87,7 @@ const parts = [
     borderColor: "border-red-300",
     textColor: "text-red-800",
     to: "/xray/thumb",
-    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/thumb-placeholder.png",
+    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-14-at-10.30.28-pm.jpeg",
     description: "Thumb joint replacements and CMC arthroplasty implants",
     count: "6 implants"
   },
@@ -98,7 +98,7 @@ const parts = [
     borderColor: "border-orange-300",
     textColor: "text-orange-800",
     to: "/xray/elbow",
-    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/elbow-placeholder.png",
+    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-15-at-2.35.29-am-e1757884077286.jpeg",
     description: "Total elbow arthroplasty and radial head prostheses",
     count: "7 implants"
   },
@@ -109,7 +109,7 @@ const parts = [
     borderColor: "border-cyan-300",
     textColor: "text-cyan-800",
     to: "/xray/finger",
-    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/finger-placeholder.png",
+    image: "https://balbharatiin.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-14-at-10.32.04-pm.jpeg",
     description: "Finger joint prostheses and arthroplasty implants",
     count: "5 implants"
   }
@@ -148,9 +148,9 @@ const XrayLibrary = () => {
             </div>
 
             {/* Stats */}
-            <div className="hidden md:flex items-center space-x-6 text-sm">
+           <div className="hidden md:flex items-center space-x-6 text-sm">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">193</div>
+                <div className="text-2xl font-bold text-blue-600"></div>
                 <div className="text-gray-500">Total Implants</div>
               </div>
               <div className="text-center">
