@@ -7,6 +7,6 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  base: '/aiimaging/',
+  base: '/',   // 👈 custom domain = root path
 });
 
