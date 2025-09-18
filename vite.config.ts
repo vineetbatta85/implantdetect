@@ -7,6 +7,6 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  base: '/',   // 👈 custom domain = root path
+  base: '/implantdetect/',   // 👈 custom domain = root path
 });
 
